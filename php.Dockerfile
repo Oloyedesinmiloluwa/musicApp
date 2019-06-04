@@ -1,0 +1,26 @@
+FROM php:7.3-apache
+# RUN apt-get update -y && apt-get install -y libmcrypt-dev openssl
+# RUN docker-php-ext-install pdo mcrypt mbstring
+RUN apt-get update && apt-get install -y \
+    zlib1g-dev curl zip libmcrypt-dev \
+    git unzip wget
+RUN apt-get install -y libmcrypt-dev \
+        libzip-dev \
+    && pecl install mcrypt-1.0.2 \
+        && docker-php-ext-enable mcrypt
+# RUN apt-get install libzip-dev
+RUN docker-php-ext-install -j$(nproc) mbstring mysqli pdo pdo_mysql zip \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf  /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# RUN docker-php-ext-install pdo mcrypt mbstring
+WORKDIR /var/www/html
+COPY . /var/www/html
+# RUN composer install add back
+# RUN composer update --no-plugins --no-scripts
+CMD php artisan serve --host=0.0.0.0 --port=8000
+EXPOSE 8000
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf

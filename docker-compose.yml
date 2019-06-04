@@ -1,0 +1,55 @@
+version: '3.5'
+
+services:
+#   redis:
+#     image: redis:latest
+#     ports:
+#       - "6380:6379"
+#   database:
+#     image: mysql:5.7
+#     command: --default-authentication-plugin=mysql_native_password
+#     ports:
+#       - '33068:3306'
+#     environment:
+#       - "MYSQL_ROOT_PASSWORD=secret"
+#   composer:
+#     restart: 'no'
+#     image: composer/composer:php7
+#     command: install
+#     volumes:
+#         - .:/app
+
+#   app:
+#     image: 'phpdev:latest'
+#     build:
+#       context: .
+#       dockerfile: phpnew.Dockerfile
+#     volumes:
+#       - ./:/var/www/html/
+#     ports:
+#       - '8050:80'
+#     environment:
+#       - "DB_HOST=database"
+#       # - 'XDEBUG_CONFIG="remote_host=host.docker.internal"'
+#     depends_on:
+#       - database
+#       - redis
+
+  # adminer:
+  #   image: adminer
+  #   # restart: always
+  #   environment:
+  #     - "ADMINER_DEFAULT_SERVER=database"
+  #   ports:
+  #     - 8080:8080
+
+  app:
+    image: my-laravel-image
+    build:
+      context: .
+      dockerfile: php.Dockerfile
+    ports:
+        - 8060:80
+        - 8000:8000
+    volumes:
+        - ./:/var/www/html
