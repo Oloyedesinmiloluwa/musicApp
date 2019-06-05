@@ -19,8 +19,8 @@ WORKDIR /var/www/html
 COPY . /var/www/html
 # RUN composer install add back
 # RUN composer update --no-plugins --no-scripts
-CMD php artisan serve --host=0.0.0.0 --port=8000
-EXPOSE 8000
+# CMD php artisan serve --host=0.0.0.0 --port=8000 ;important
+# EXPOSE 8000
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf

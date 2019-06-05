@@ -20,7 +20,8 @@ class CreateSubscriptionsTable extends Migration
             $table->float('currency');
             $table->timestamp('startDate');
             $table->timestamp('endDate');
-            $table->timestamps();
+            $table->timestamp('createdAt');
+            $table->timestamp('updatedAt');
         });
     }
 

@@ -15,13 +15,13 @@ class CreateTracksTable extends Migration
     {
         Schema::create('tracks', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('artisteId');
-            $table->integer('genreId');
-            $table->integer('albumId');
-            $table->integer('playlistId');
+            $table->string('name');
+            $table->integer('artisteId')->nullable();
+            $table->integer('genreId')->nullable();
+            $table->integer('albumId')->nullable();
             $table->timestamps();
-            // $table->timestamps('createdAt');
-            // $table->timestamps('updatedAt');
+            // $table->timestamp('createdAt'); //till I fix update function to permit camelcase
+            // $table->timestamp('updatedAt');
         });
     }
 

@@ -17,7 +17,8 @@ class CreateFavouritesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('userId');
             $table->integer('trackId');
-            $table->timestamps();
+            $table->timestamp('createdAt');
+            $table->timestamp('updatedAt');
         });
     }
 

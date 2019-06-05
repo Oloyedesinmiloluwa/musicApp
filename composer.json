@@ -57,6 +57,12 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "test": [
+            "vendor/bin/phpunit --debug"
+        ],
+        "testv": [
+            "vendor/bin/phpunit --debug --verbose --coverage-clover build/logs/clover.xml"
         ]
     }
 }

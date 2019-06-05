@@ -18,9 +18,8 @@ class CreateArtistesTable extends Migration
             $table->string('firstName');
             $table->string('lastName');
             $table->string('bio');
-            $table->timestamps();
-            // $table->timestamp('createdAt');
-            // $table->timestamp('updatedAt');
+            $table->timestamp('createdAt');
+            $table->timestamp('updatedAt');
         });
     }
 

@@ -19,7 +19,8 @@ class CreateRatingsTable extends Migration
             $table->integer('userId');
             $table->string('text')->nullable();
             $table->integer('rating');
-            $table->timestamps();
+            $table->timestamp('createdAt');
+            $table->timestamp('updatedAt');
         });
     }
 
