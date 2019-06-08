@@ -16,6 +16,7 @@ class CreateTracksTable extends Migration
         Schema::create('tracks', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('url');
             $table->integer('artisteId')->nullable();
             $table->integer('genreId')->nullable();
             $table->integer('albumId')->nullable();

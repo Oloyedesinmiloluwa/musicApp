@@ -7,9 +7,14 @@ use App\Track;
 use App\Playlist;
 use App\Rating;
 use App\Favourite;
+use Illuminate\Support\Facades\Storage;
 
 class TrackController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('jwt.auth')->only('destroy');
+    }
     public function addToPlaylist(Request $request, Playlist $playlist, Track $track)
     {
         $exitingPlaylist = $track->playlists()->where('playlistId', $playlist->id)->get();
@@ -23,9 +28,17 @@ class TrackController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'track.name' => 'required'
+            'track.name' => 'required',
+            'audio' => 'required|file|max:2000|mimetypes:audio/mpeg'
         ]);
-        $track = Track::create($request->track);
+
+        /* if (!in_array($request->file('audio')->getClientOriginalExtension(), ['mp3', 'mp4'])) {
+            return response()->json(['audio' => ['Please upload your audio in mp3 or mp4 format']]);
+        }; */
+        $path = $request->file('audio')->store('Tracks');//Todo: file extension must march the uploaded file extension
+        $input = $request->track;
+        $input['url'] = $path;
+        $track = Track::create($input);
         return response()->json(['msg' => 'Track successfully Added', 'data' => $track ], 201);
     }
 
@@ -70,6 +83,26 @@ class TrackController extends Controller
                 'track' => $tracks
             ]
         ], 200);
+    }
+
+    public function download(Request $request, Track $track)
+    {
+       return Storage::download($track->audioUrl);
+    }
+
+    public function destroy(Request $request, Track $track)
+    {
+        Storage::delete($track->audioUrl);
+        $track->delete();
+        return response()->json(['msg' => 'Track successfully deleted']);
+    }
+
+    public function show(Request $request, Track $track)
+    {
+        return response()->json([
+            'data' => [
+            'track' => $track
+        ]]);
     }
 
     public function favouriteTrack(Request $request, Track $track)

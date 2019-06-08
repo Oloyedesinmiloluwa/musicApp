@@ -16,4 +16,19 @@ class GenreController extends Controller
        $genre = Genre::create($request->genre);
        return response()->json([ 'msg' => 'Genre successfully created', 'data' => $genre ], 201);
     }
+
+    public function index(Request $request)
+    {
+        $genres = null;
+        $query = $request->query();
+        if($query && isset($query['name'])) {
+            $genres = Genre::where('name', 'like', '%'.$request->query()['name'].'%')->get();
+        }
+        if (!$genres) {
+            $genres = Genre::all();
+        }
+        return response()->json(['data' => [
+            'genre' => $genres
+        ]], 200);
+    }
 }

@@ -10,6 +10,17 @@ use App\User;
 class UserTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function createUser()
+    {
+        $user = User::create([
+            'firstName' => 'First',
+            'lastName' => 'we',
+            'email' => 'we@yahoo.com',
+            'password' => 'passwordA1'
+        ]);
+        return $user;
+    }
     /**
      * A feature test for user registration.
      *
@@ -26,7 +37,8 @@ class UserTest extends TestCase
             ]
         ]);
         // dump($response->json());
-        $response->assertStatus(201);
+        // $response->assertStatus(201);
+        $response->assertJson([]);
         $response->assertJsonStructure([
             'msg',
             'data' => ['firstName', 'lastName', 'email', 'id' ]
@@ -35,13 +47,14 @@ class UserTest extends TestCase
 
     public function testUpdateProfile()
     {
-        $user = User::create([
+        $user = $this->createUser();
+        /* $user = User::create([
             'firstName' => 'First',
             'lastName' => 'we',
             'email' => 'we@yahoo.com',
             'password' => 'fsljjjlj'
-        ]);
-        $response = $this->put("/api/v1/users/{$user->id}/profile", [
+        ]); */
+        $response = $this->put("/api/v1/users/profile", [
             'user' => [
                 'bio' => 'I am the best artiste trust me',
                 'photo' => 'link to my photo',
@@ -52,5 +65,17 @@ class UserTest extends TestCase
             'msg',
             'data' => ['user']
         ]);
+    }
+
+    public function testLogin()
+    {
+        $this->createUser();
+        $response = $this->post('/api/v1/auth/login', [
+            'user' => [
+                'email' => 'we@yahoo.com',
+                'password' => 'passwordA1'
+            ]
+        ]);
+        $response->assertJson(['msg' => 'Login successful']);
     }
 }

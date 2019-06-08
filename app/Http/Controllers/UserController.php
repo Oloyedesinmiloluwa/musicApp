@@ -7,6 +7,10 @@ use App\User;
 use Hash;
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('jwt.auth')->only('updateProfile', 'getFavourites');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -25,25 +29,28 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request->user['firstName'];
         $this->validate(
             $request,
             [
                 'user.firstName' => ['required', 'min:2'], //Todo: find out if you can generate all errors
                 'user.lastName' => ['required', 'min:2'],
                 'user.email' => ['required', 'email', 'unique:users,email', 'max:50'],
-                'user.password' => ['required', 'min:4'], // update later with regex
+                'user.password' => ['required', 'min:4'],
             ]
         );
 
         $input = $request->input();// note input includes query params
-        $input['user']['password'] = Hash::make($request->user['firstName']);
+        if (!preg_match("/[0-9][A-Za-z]/", $input['user']['password'])) {
+            return response()->json(['msg' => 'Your password must contain lowercase, uppercase letters and number character'], 401);
+        }
+        $input['user']['password'] = Hash::make($request->user['password']);
         $user = User::create($input['user']);
        return response()->json(['msg' => 'Registration successful', 'data' => $user ], 201);
     }
 
-    public function updateProfile(Request $request, User $user)
+    public function updateProfile(Request $request)
     {
+        $user = auth()->user();
         $this->validate($request, [
             'user.email' => 'email|max:50',
             'user.bio' => 'max:250',
@@ -62,8 +69,7 @@ class UserController extends Controller
 
     public function getFavourites()
     {
-        // get user;
-        $user = User::find(1);
+        $user = auth()->user();
         $favourites = $user->favouriteTracks;
         return response()->json(['data' => [
             'favourite' => $favourites

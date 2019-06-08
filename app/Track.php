@@ -9,7 +9,7 @@ class Track extends Model
 {
     // use CamelCase;
     protected $fillable = [
-        'name'
+        'name', 'url'
     ];
 
     public function playlists()
