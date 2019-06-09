@@ -34,7 +34,8 @@ class AlbumTest extends TestCase
             'name' => 'my album'
         ]);
         $track = Track::create([
-            'name' => 'New Track'
+            'name' => 'New Track',
+            'url' => 'test.mp3'
         ]);
         $response = $this->call('PUT', "/api/v1/albums/{$album->id}/track/{$track->id}");
         $response->assertStatus(200);

@@ -20,8 +20,18 @@
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
+            <exclude>
+                <directory suffix=".php">./app/Http/Controllers/Auth/</directory>
+                <directory suffix=".php">./app/Http/Middleware/</directory>
+                <directory suffix=".php">./app/Http/Kernel.php</directory>
+                <directory suffix=".php">./app/Exceptions/Handler.php</directory>
+            </exclude>
         </whitelist>
     </filter>
+    <logging>
+        <log type="coverage-html" target="./report"
+            lowUpperBound="50" highLowerBound="80" />
+    </logging>
     <php>
         <server name="APP_ENV" value="testing"/>
         <server name="BCRYPT_ROUNDS" value="4"/>

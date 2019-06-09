@@ -17,7 +17,7 @@ class CreateTracksTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('url');
-            $table->integer('artisteId')->nullable();
+            $table->integer('userId')->nullable();
             $table->integer('genreId')->nullable();
             $table->integer('albumId')->nullable();
             $table->timestamps();

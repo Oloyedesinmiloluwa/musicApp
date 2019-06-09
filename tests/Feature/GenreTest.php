@@ -22,8 +22,25 @@ class GenreTest extends TestCase
                 'description' => 'The newest Afro beat in town'
             ]
         ]);
-        // dump($response->json());
         $response->assertStatus(201);
         $response->assertJsonStructure(['msg', 'data']);
+    }
+
+    public function testGetSingleGenre()
+    {
+        $response = $this->get('/api/v1/genres');
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => ['genre']
+        ]);
+    }
+
+    public function testGetSingleGenreWithQuery()
+    {
+        $response = $this->get('/api/v1/genres?name=afro');
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => ['genre']
+        ]);
     }
 }

@@ -9,7 +9,7 @@ class AlbumController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @codeCoverageIgnore
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -42,7 +42,7 @@ class AlbumController extends Controller
 
     /**
      * Display the specified resource.
-     *
+     * @codeCoverageIgnore
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -53,7 +53,7 @@ class AlbumController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
+     * @codeCoverageIgnore
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -65,7 +65,7 @@ class AlbumController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
+     * @codeCoverageIgnore
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

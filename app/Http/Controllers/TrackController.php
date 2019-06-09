@@ -13,7 +13,7 @@ class TrackController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('jwt.auth')->only('destroy');
+        $this->middleware('jwt.auth')->only('destroy', 'rateAndComment');
     }
     public function addToPlaylist(Request $request, Playlist $playlist, Track $track)
     {
@@ -39,7 +39,13 @@ class TrackController extends Controller
         $input = $request->track;
         $input['url'] = $path;
         $track = Track::create($input);
-        return response()->json(['msg' => 'Track successfully Added', 'data' => $track ], 201);
+        return response()->json([
+            'msg' => 'Track successfully Added',
+            'data' => [
+                'track' => $track
+                ]
+            ],
+        201);
     }
 
     public function rateAndComment (Request $request, Track $track)
@@ -50,7 +56,7 @@ class TrackController extends Controller
         ]);
         $input = $request->rating;
         $input['trackId'] = $track->id;
-        $input['userId'] = 1; //Todo: update with authenticated user
+        $input['userId'] = auth()->user()['id'];
         $rating = Rating::create($input);
         return response()->json([
             'msg' => 'Rating submitted successfully',
@@ -87,12 +93,12 @@ class TrackController extends Controller
 
     public function download(Request $request, Track $track)
     {
-       return Storage::download($track->audioUrl);
+       return Storage::download($track->url);
     }
 
     public function destroy(Request $request, Track $track)
     {
-        Storage::delete($track->audioUrl);
+        Storage::delete($track->url);
         $track->delete();
         return response()->json(['msg' => 'Track successfully deleted']);
     }

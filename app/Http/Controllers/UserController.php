@@ -13,7 +13,7 @@ class UserController extends Controller
     }
     /**
      * Display a listing of the resource.
-     *
+     * @codeCoverageIgnore
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -40,8 +40,8 @@ class UserController extends Controller
         );
 
         $input = $request->input();// note input includes query params
-        if (!preg_match("/[0-9][A-Za-z]/", $input['user']['password'])) {
-            return response()->json(['msg' => 'Your password must contain lowercase, uppercase letters and number character'], 401);
+        if (!preg_match("/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{4,10}$/", $input['user']['password'])) {
+            return response()->json(['msg' => 'Your password must contain lowercase, uppercase letters and number character and must be 4 to 8 characters long'], 400);
         }
         $input['user']['password'] = Hash::make($request->user['password']);
         $user = User::create($input['user']);
@@ -78,7 +78,7 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
-     *
+     * @codeCoverageIgnore
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -89,7 +89,7 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
+     * @codeCoverageIgnore
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -101,7 +101,7 @@ class UserController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
+     * @codeCoverageIgnore
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
