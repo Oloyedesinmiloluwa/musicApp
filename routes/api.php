@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Auth;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-// Auth::routes();
 Route::group([
     'middleware' => 'api',
     'prefix' => 'v1/auth'

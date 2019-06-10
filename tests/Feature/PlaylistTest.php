@@ -21,7 +21,6 @@ class PlaylistTest extends TestCase
                 'name' => 'nice playlist'
             ]
         ]);
-            // dump($response->json());
         $response->assertStatus(201);
         $response->assertJsonStructure([
             'msg',

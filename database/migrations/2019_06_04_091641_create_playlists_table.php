@@ -16,7 +16,6 @@ class CreatePlaylistsTable extends Migration
         Schema::create('playlists', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            // $table->array('tag'); //trying to see the array storage and I feel it will work fine but did not work
             $table->timestamp('createdAt');
             $table->timestamp('updatedAt');
         });
