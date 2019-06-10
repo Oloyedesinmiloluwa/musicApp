@@ -34,7 +34,6 @@ class AlbumController extends Controller
 
     public function addTrack (Request $request, Album $album, Track $track)
     {
-        // if($track);
         $track->albumId = $album->id;
         $track->save();
         return response()->json(['msg' => "Track added to {$album->name} Album", 'data' => $track ], 200);//Todo: wrap track in track property

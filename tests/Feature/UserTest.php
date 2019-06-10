@@ -40,7 +40,7 @@ class UserTest extends TestCase
         $response->assertStatus(201);
         $response->assertJsonStructure([
             'msg',
-            'data' => ['firstName', 'lastName', 'email', 'id' ]
+            'data' => ['firstName', 'lastName', 'email', 'id']
         ]);
     }
 
@@ -57,6 +57,22 @@ class UserTest extends TestCase
         $response->assertStatus(400);
         $response->assertJson([
             'msg' => 'Your password must contain lowercase, uppercase letters and number character and must be 4 to 8 characters long'
+        ]);
+    }
+
+    public function testUserRegisterInvalidEmail()
+    {
+        $response = $this->post('/api/v1/users', [
+            'user' => [
+                'firstName' => 'me',
+                'lastName' => 'we',
+                'email' => 'testtemusicapp.com',
+                'password' => 'user1A',
+            ]
+        ]);
+        $response->assertStatus(400);
+        $response->assertJson([
+            'msg' => 'Your provide a valid email'
         ]);
     }
 
@@ -89,18 +105,4 @@ class UserTest extends TestCase
             'data' => ['user']
         ]);
     }
-
-    /* public function testLogin()
-    {
-        $user = $this->createUser();
-        dump(auth()->attempt(['email' => $user->email, 'password' => $user->password ]));
-        dump($user->password);
-        $response = $this->post('/api/v1/auth/login', [
-            'user' => [
-                'email' => $user->email,
-                'password' => $user->password
-            ]
-        ]);
-        $response->assertJson(['msg' => 'Login successful']);
-    } */
 }

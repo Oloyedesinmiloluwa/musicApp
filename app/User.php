@@ -42,7 +42,6 @@ class User extends Authenticatable implements JWTSubject
 
     public function favouriteTracks()
     {
-        // return $this->hasMany('App\Favourite', 'userId', 'id');
         return $this->hasManyThrough('App\Track', 'App\Favourite', 'userId', 'id', 'id', 'trackId');
     }
 

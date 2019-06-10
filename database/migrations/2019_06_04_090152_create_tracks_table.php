@@ -21,8 +21,6 @@ class CreateTracksTable extends Migration
             $table->integer('genreId')->nullable();
             $table->integer('albumId')->nullable();
             $table->timestamps();
-            // $table->timestamp('createdAt'); //till I fix update function to permit camelcase
-            // $table->timestamp('updatedAt');
         });
     }
 
