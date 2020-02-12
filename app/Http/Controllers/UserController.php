@@ -34,12 +34,15 @@ class UserController extends Controller
             [
                 'user.firstName' => ['required', 'min:2'], //Todo: find out if you can generate all errors
                 'user.lastName' => ['required', 'min:2'],
-                'user.email' => ['required', 'email', 'unique:users,email', 'max:50'],
+                'user.email' => ['required', 'unique:users,email', 'max:50'],
                 'user.password' => ['required', 'min:4'],
             ]
         );
 
         $input = $request->input();// note input includes query params
+        if (!preg_match("/^(.*\w)(@).*\w$/", $input['user']['email'])) {
+            return response()->json(['msg' => 'Your provide a valid email'], 400);
+        }
         if (!preg_match("/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{4,10}$/", $input['user']['password'])) {
             return response()->json(['msg' => 'Your password must contain lowercase, uppercase letters and number character and must be 4 to 8 characters long'], 400);
         }
