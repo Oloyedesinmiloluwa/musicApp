@@ -8,6 +8,6 @@ class Playlist extends Model
 {
     use CamelCase;
     protected $fillable = [
-        'name'
+        'name', 'userId'
     ];
 }

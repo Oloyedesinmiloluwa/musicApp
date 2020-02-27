@@ -33,6 +33,7 @@ Route::get('/v1/tracks/{track}/download', 'TrackController@download');
 Route::delete('/v1/tracks/{track}', 'TrackController@destroy');
 Route::put('/v1/tracks/{track}/favourite', 'TrackController@favouriteTrack');
 Route::put('/v1/playlists/{playlist}/track/{track}', 'TrackController@addToPlaylist'); //Todo: validate params
+Route::get('/v1/playlists/', 'PlaylistController@index');
 Route::post('/v1/albums', 'AlbumController@store');
 Route::put('/v1/albums/{album}/track/{track}', 'AlbumController@addTrack');
 Route::post('/v1/genres/', 'GenreController@store');

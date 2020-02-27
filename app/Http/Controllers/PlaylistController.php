@@ -7,6 +7,11 @@ use App\Playlist;
 
 class PlaylistController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('jwt.auth')->only('store', 'index');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,13 @@ class PlaylistController extends Controller
      */
     public function index()
     {
-        //
+        $user = auth()->user();
+        $playlist = Playlist::where('userId', $user->id)->get();
+        return response()->json([
+            'data' => [
+                'playlist' => $playlist
+            ]
+        ]);
     }
 
     /**
@@ -29,7 +40,10 @@ class PlaylistController extends Controller
         [
             'playlist.name' => ['required', 'min:2']
         ]);
-        $playlist = Playlist::create($request->input('playlist'));
+        $input = $request->input('playlist');
+        // dump(auth()->user()->id);
+        $input['userId'] = auth()->user()->id;
+        $playlist = Playlist::create($input);
         return response()->json(['msg' => 'Playlist created successfully', 'data' => $playlist ], 201);
     }
 
